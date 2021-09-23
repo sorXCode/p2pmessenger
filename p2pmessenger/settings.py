@@ -41,13 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'user',
+    'corsheaders',
     'djoser',
+    'messenger',
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -72,6 +76,9 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTH_USER_MODEL = 'user.User'
+CORS_ORIGIN_ALLOW_ALL = True
 
 WSGI_APPLICATION = 'p2pmessenger.wsgi.application'
 ASGI_APPLICATION = 'p2pmessenger.asgi.application'

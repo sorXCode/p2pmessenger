@@ -6,3 +6,6 @@ djangochannelsrestframework==0.3.0
 python-dotenv==0.19.0
 dj-database-url==0.5.0
 psycopg2-binary==2.9.1
+django-cors-headers==3.7.0
+uvicorn==0.15.0
+websockets==10.0

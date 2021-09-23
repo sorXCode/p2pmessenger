@@ -7,7 +7,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 EXPOSE 8080
 
-
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
 
