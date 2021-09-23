@@ -1,0 +1,1 @@
+CREATE DATABASE p2pmessenger;
