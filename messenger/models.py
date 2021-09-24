@@ -78,11 +78,23 @@ class MessageHistory(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_index=True, related_name='user_a')
     user_b = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_index=True, related_name='user_b')
-    messages = ArrayField(base_field=models.JSONField(
-        encoder=DjangoJSONEncoder), default=list)
+    messages = models.JSONField(encoder=DjangoJSONEncoder)
     added_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
     objects = MessageHistoryManager()
 
     class Meta:
         ordering = ('-updated_at',)
+
+    def receiver_mark_as_read(self, receiver):
+        for message in self.messages[::-1]:
+            # only receiver can mark his/her message as read
+            if message["receiver"]==receiver:
+                print(message)
+                if message["is_read"]==False:
+                    message["is_read"] = True
+                else:
+                    # break on most recent "read" message by user
+                    break
+        self.save()
+    

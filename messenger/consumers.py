@@ -1,5 +1,6 @@
 
 import json
+from django.core.checks import messages
 from django.core.exceptions import ValidationError
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -15,7 +16,7 @@ from rest_framework.generics import get_object_or_404
 from .models import MessageHistory
 from .serializers import (LastMessagesSerializer, MessageEntrySerializer,
                          MessageHistorySerializer)
-
+import logging
 
 class ChatConsumer(ObserverModelInstanceMixin, GenericAsyncAPIConsumer):
     permission_classes = [dcrf_permissions.IsAuthenticated, ]
@@ -26,13 +27,13 @@ class ChatConsumer(ObserverModelInstanceMixin, GenericAsyncAPIConsumer):
     def get_queryset(self, *args, **kwargs):
         current_user = self.scope['user']
 
-        if kwargs.get('action') in ['subscribe_instance', 'retrieve', 'update']:
+        if kwargs.get('action') in ['subscribe_instance', 'retrieve', 'update', 'mark_as_read']:
             pk_field = {self.mapped_field: f'{kwargs.get(self.lookup_field)}'}
             return self.get_serializer_class(*args, **kwargs).Meta.model.objects.filter(Q(**pk_field) & (Q(user_a=current_user) | Q(user_b=current_user))).all()
 
     def get_serializer_class(self, *args, **kwargs):
         action = kwargs.get('action')
-        if action in ['subscribe_instance', 'retrieve']:
+        if action in ['subscribe_instance', 'retrieve', 'mark_as_read']:
             return MessageHistorySerializer
         elif action == "update":
             return LastMessagesSerializer
@@ -59,10 +60,6 @@ class ChatConsumer(ObserverModelInstanceMixin, GenericAsyncAPIConsumer):
         obj = get_object_or_404(queryset, **filter_kwargs)
 
         return obj
-
-    @classmethod
-    def _encode_json(cls, content):
-        return json.dumps(content, cls=DjangoJSONEncoder)
     
     @classmethod
     async def encode_json(cls, content):
@@ -77,8 +74,11 @@ class ChatConsumer(ObserverModelInstanceMixin, GenericAsyncAPIConsumer):
         serializer = self.get_serializer(data=data, action_kwargs=kwargs)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return self._encode_json(serializer.data), status.HTTP_201_CREATED
+        return serializer.data, status.HTTP_201_CREATED
 
     @action()
-    def mark_as_read(self, data, *args, **kwargs):
-        pass
+    def mark_as_read(self, conversation_id, *args, **kwargs):
+        data = {'pk': conversation_id, 'action':'mark_as_read'}
+        conversation_history = self.get_object(**data) #raises HTTP 404 on NotFound
+        conversation_history.receiver_mark_as_read(receiver=str(self.scope['user'].id))
+        return {"status": "completed"}, 200

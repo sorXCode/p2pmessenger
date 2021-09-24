@@ -39,7 +39,6 @@ class TokenAuthMiddlewareInstance:
         token = parse_qs(self.scope['query_string'].decode("utf8")).get("token")
         if token:
             token = token[0]
-            print(token)
         else:
             print("token not provided")
             return None
@@ -50,7 +49,7 @@ class TokenAuthMiddlewareInstance:
             AccessToken(token)
         except (InvalidToken, TokenError) as e:
             # Token is invalid
-            print('\n\n\n\n\n\n',e)
+            print('\n\n\n',e)
             return None
         else:
             #  Then token is valid, decode it
