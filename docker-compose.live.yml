@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  db:
+    container_name: p2p_db
+    image: postgres:12-alpine
+    env_file:
+      - db.env
+    restart: always
+  cache:
+    container_name: p2p_cache
+    image: redis:6.2.5-alpine
+    command: redis-server --requirepass super_scuere
+    restart: always
+  web:
+    container_name: p2p_web
+    image: sorxcode/p2pmessenger:dev
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "80:8080"
+    depends_on:
+      - db
+      - cache
+    labels:
+      kompose.service.type: LoadBalancer

@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  DATABASE_URL: postgres://postgres:OperationalError@db:5432/p2pmessenger
+  REDIS_HOST: redis://:super_scuere@cache:6379
+  SECRET_KEY: y0(13!yp+4_ji%0s^lrdjz%#8ry)48m6b)pj=l$g5fn192%+@2
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web-env
+  name: env

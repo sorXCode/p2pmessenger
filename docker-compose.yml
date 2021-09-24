@@ -26,7 +26,6 @@ services:
   web:
     container_name: p2p_web
     build: .
-    # command: "uvicorn main:app --host 0.0.0.0 --port 8080 --reload"
     env_file:
       - .env
     volumes:
@@ -37,3 +36,5 @@ services:
     depends_on:
       - db
       - cache
+    labels:
+      kompose.service.type: LoadBalancer

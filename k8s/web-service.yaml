@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.live.yml
+    kompose.service.type: LoadBalancer
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 8080
+  selector:
+    io.kompose.service: web
+  type: LoadBalancer
+status:
+  loadBalancer: {}

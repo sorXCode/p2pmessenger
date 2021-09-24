@@ -1,3 +1,8 @@
-venv
+venv/
 *.py[cab]
-postgres-data
+postgres-data/
+redis/
+sql/
+k8s/
+.git/
+.env

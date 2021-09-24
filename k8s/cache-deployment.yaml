@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.live.yml
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cache
+  name: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cache
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ../docker-compose.live.yml
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: cache
+    spec:
+      containers:
+        - args:
+            - redis-server
+            - --requirepass
+            - super_scuere
+          image: redis:6.2.5-alpine
+          name: p2p-cache
+          resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: postgres
+  POSTGRES_PASSWORD: OperationalError
+  POSTGRES_USER: postgres
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db-db-env
+  name: db-env
