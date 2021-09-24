@@ -14,6 +14,15 @@ services:
         - ./postgres-data:/var/lib/postgresql/data
         - ./sql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
     restart: unless-stopped
+  cache:
+    container_name: p2p_cache
+    image: redis:6.2.5-alpine
+    command: redis-server --requirepass super_scuere
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
+    restart: unless-stopped
   web:
     container_name: p2p_web
     build: .
@@ -27,3 +36,4 @@ services:
       - "8081:8080"
     depends_on:
       - db
+      - cache

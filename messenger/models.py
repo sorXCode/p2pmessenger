@@ -90,7 +90,6 @@ class MessageHistory(models.Model):
         for message in self.messages[::-1]:
             # only receiver can mark his/her message as read
             if message["receiver"]==receiver:
-                print(message)
                 if message["is_read"]==False:
                     message["is_read"] = True
                 else:

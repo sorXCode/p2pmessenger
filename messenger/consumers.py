@@ -1,6 +1,5 @@
 
 import json
-from django.core.checks import messages
 from django.core.exceptions import ValidationError
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -16,7 +15,6 @@ from rest_framework.generics import get_object_or_404
 from .models import MessageHistory
 from .serializers import (LastMessagesSerializer, MessageEntrySerializer,
                          MessageHistorySerializer)
-import logging
 
 class ChatConsumer(ObserverModelInstanceMixin, GenericAsyncAPIConsumer):
     permission_classes = [dcrf_permissions.IsAuthenticated, ]
