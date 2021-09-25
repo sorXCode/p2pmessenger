@@ -4,10 +4,11 @@ P2PMessenger is an asycnchronous and real-time messaging system. It also has an 
 
 ## TECHNOLOGY STACK
 
-Python/Django
-Channels
-PostgreSQL
-Redis
+- Python/Django
+- DjangoRestFramework
+- Channels
+- PostgreSQL
+- Redis
 
 ## RUNNING PROJECT (Docker compose)
 
