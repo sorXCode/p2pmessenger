@@ -6,10 +6,8 @@ services:
     image: postgres:12-alpine
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=OperationalError
-      - POSTGRES_DB=postgres
+    env_file:
+      - db.env
     volumes: 
         - ./postgres-data:/var/lib/postgresql/data
         - ./sql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
@@ -17,7 +15,7 @@ services:
   cache:
     container_name: p2p_cache
     image: redis:6.2.5-alpine
-    command: redis-server --requirepass super_scuere
+    command: redis-server --requirepass secret_strings_super
     ports:
       - "6379:6379"
     volumes:
