@@ -12,6 +12,9 @@ services:
         - ./postgres-data:/var/lib/postgresql/data
         - ./sql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
     restart: unless-stopped
+    healthcheck:
+      test: nc -z localhost 5432
+
   cache:
     container_name: p2p_cache
     image: redis:6.2.5-alpine
@@ -32,7 +35,9 @@ services:
     ports:
       - "8081:8080"
     depends_on:
-      - db
-      - cache
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_started
     labels:
       kompose.service.type: LoadBalancer

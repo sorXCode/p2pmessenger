@@ -13,7 +13,7 @@ P2PMessenger is an asycnchronous and real-time messaging system. It also has an 
 ## RUNNING PROJECT (Docker compose)
 
 - Run `docker compose build` to build the images for the project
-- Run `docker compose up` to start the project; the api endpoint can be accessed at `http://127.0.0.1:8080` .
+- Run `docker compose up` to start the project; the api endpoint can be accessed at `http://127.0.0.1:8081` .
 
 - To shutdown the project, run `docker compose down`
 
